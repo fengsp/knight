@@ -24,7 +24,7 @@ Basically you just need to set one watching path.
 
 	func main() {
     	http.HandleFunc("/", handler)
-    	# pass your root path in    	
+    	// pass your root path in    	
     	knight := knight.NewKnight(root="/private/tmp/test")
     	knight.ListenAndServe(":8000", nil)
 	}

@@ -2,12 +2,12 @@ package knight
 
 import (
 	"fmt"
-    "strings"
 	"log"
 	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -44,7 +44,7 @@ type Knight struct {
 }
 
 func NewKnight(root string) *Knight {
-    return &Knight{root:root}
+	return &Knight{root: root}
 }
 
 func (knight Knight) ListenAndServe(addr string, handler http.Handler) error {
@@ -53,14 +53,14 @@ func (knight Knight) ListenAndServe(addr string, handler http.Handler) error {
 		for {
 			fmt.Println(" * Restarting with reloader")
 			arg := []string{"run"}
-            _, file := filepath.Split(os.Args[0])
-            file = file + ".go"
-            arg = append(arg, file)
+			_, file := filepath.Split(os.Args[0])
+			file = file + ".go"
+			arg = append(arg, file)
 			arg = append(arg, os.Args[1:]...)
 			command := exec.Command("go", arg...)
 			command.Env = append(command.Env, "KNIGHT_RELOADER=true")
-            command.Env = append(command.Env, os.Environ()...)
-            command.Stdout = os.Stdout
+			command.Env = append(command.Env, os.Environ()...)
+			command.Stdout = os.Stdout
 			err := command.Run()
 			if err == nil {
 				return nil
@@ -72,5 +72,5 @@ func (knight Knight) ListenAndServe(addr string, handler http.Handler) error {
 		}()
 		reloaderLoop(knight.root)
 	}
-    return nil
+	return nil
 }
