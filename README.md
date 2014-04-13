@@ -24,7 +24,18 @@ Basically you just need to set one watching path.
 
 	func main() {
     	http.HandleFunc("/", handler)
-    	// pass your root path in    	
+    	// pass your root path in
+    	// pass "" to use current working directory
     	knight := knight.NewKnight("/private/tmp/test")
     	knight.ListenAndServe(":8000", nil)
 	}
+
+You can get it working like this:
+
+    $ go run test.go
+    $ * Knight serving on :8000
+ 	$ * Restarting with reloader
+ 	$ * Detected change, reloading
+ 	$ * Restarting with reloader
+ 	$ * Detected change, reloading
+ 	$ * Restarting with reloader

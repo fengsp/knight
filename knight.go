@@ -44,6 +44,13 @@ type Knight struct {
 }
 
 func NewKnight(root string) *Knight {
+	if root == "" {
+		if cwd, err := os.Getwd(); err != nil {
+			panic(fmt.Sprintf("Error getting working directory: %s", err))
+		} else {
+			root = cwd
+		}
+	}
 	return &Knight{root: root}
 }
 
