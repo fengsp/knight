@@ -33,9 +33,9 @@ Basically you just need to set one watching path.
 You can get it working like this:
 
     $ go run test.go
-    $ * Knight serving on :8000
- 	$ * Restarting with reloader
- 	$ * Detected change, reloading
- 	$ * Restarting with reloader
- 	$ * Detected change, reloading
- 	$ * Restarting with reloader
+     * Knight serving on :8000
+ 	 * Restarting with reloader
+ 	 * Detected change, reloading
+ 	 * Restarting with reloader
+ 	 * Detected change, reloading
+ 	 * Restarting with reloader
