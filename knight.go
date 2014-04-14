@@ -1,7 +1,9 @@
 package knight
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -57,8 +59,15 @@ func NewKnight(root string) *Knight {
 func (knight Knight) ListenAndServe(addr string, handler http.Handler) error {
 	if reloaderEnv := os.Getenv("KNIGHT_RELOADER"); reloaderEnv != "true" {
 		fmt.Printf(" * Knight serving on %s\n", addr)
+		stdErrC := make(chan string)
 		for {
 			fmt.Println(" * Restarting with reloader")
+			read, write, _ := os.Pipe()
+			go func() {
+				var buf bytes.Buffer
+				io.Copy(&buf, read)
+				stdErrC <- buf.String()
+			}()
 			arg := []string{"run"}
 			_, file := filepath.Split(os.Args[0])
 			file = file + ".go"
@@ -68,9 +77,17 @@ func (knight Knight) ListenAndServe(addr string, handler http.Handler) error {
 			command.Env = append(command.Env, "KNIGHT_RELOADER=true")
 			command.Env = append(command.Env, os.Environ()...)
 			command.Stdout = os.Stdout
+			command.Stderr = write
 			err := command.Run()
 			if err == nil {
 				return nil
+			} else {
+				write.Close()
+				stdErr := <-stdErrC
+				if !strings.Contains(stdErr, "exit status 3") {
+					fmt.Print(stdErr)
+					return err
+				}
 			}
 		}
 	} else {
