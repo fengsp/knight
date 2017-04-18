@@ -3,11 +3,11 @@ knight
 
 One HTTP web server with reloader for Go, knight detects file changes and restart the server automatically.
 
-##install
+## install
     
     $ go get github.com/fengsp/knight
 
-##usage
+## usage
 Basically you just need to set one watching path.
 
 ```Go
